@@ -1,10 +1,13 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 import tensorflow as tf
 import pickle
 import numpy as np
 from typing import Optional, AsyncGenerator
 from contextlib import asynccontextmanager
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from config import settings
 
@@ -57,9 +60,15 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Initialize rate limiter
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 
 @app.post(f"{settings.API_V1_STR}/analyze", response_model=SentimentResponse)
-async def analyze_sentiment(review: Review):
+@limiter.limit(f"{settings.RATE_LIMIT_REQUESTS}/minute")
+async def analyze_sentiment(request: Request, review: Review):
     try:
         # Check text length
         if len(review.text) > settings.MAX_TEXT_LENGTH:
@@ -91,7 +100,8 @@ async def analyze_sentiment(review: Review):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get(f"{settings.API_V1_STR}/health")
-async def health_check():
+@limiter.limit(f"{settings.RATE_LIMIT_REQUESTS}/minute")
+async def health_check(request: Request):
     return {
         "status": "healthy",
         "model_loaded": model is not None,
@@ -99,6 +109,7 @@ async def health_check():
         "settings": {
             "max_text_length": settings.MAX_TEXT_LENGTH,
             "model_path": str(settings.MODEL_PATH),
-            "tokenizer_path": str(settings.TOKENIZER_PATH)
+            "tokenizer_path": str(settings.TOKENIZER_PATH),
+            "rate_limit": f"{settings.RATE_LIMIT_REQUESTS} requests per minute"
         }
     } 

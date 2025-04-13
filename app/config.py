@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     PORT: int = Field(default=8000, description="Port to run the server on")
     RELOAD: bool = Field(default=True, description="Enable auto-reload")
     
+    # Rate Limiter Settings
+    RATE_LIMIT_REQUESTS: int = Field(default=10, description="Number of requests allowed per minute")
+    RATE_LIMIT_MINUTES: int = Field(default=1, description="Time window for rate limiting in minutes")
+    
     class Config:
         env_file = ".env"
         case_sensitive = True
