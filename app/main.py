@@ -44,8 +44,16 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     and logs a shutdown message at shutdown.
     """
     try:
-        #load_model()
-        print("Model loaded")
+        global model, tokenizer, max_length
+        # Load the trained model
+        model = tf.keras.models.load_model('sentiment_model.h5')
+        
+        # Load tokenizer (assuming it was saved during training)
+        with open('tokenizer.pickle', 'rb') as handle:
+            tokenizer = pickle.load(handle)
+            
+        # Set the same max_length used during training
+        max_length = model.input_shape[1]  # Get from model input shape
 
     except Exception as e:
         print(e)
@@ -78,18 +86,18 @@ async def analyze_sentiment(request: Request, review: Review):
             )
         
         # # Preprocess and predict
-        # sequence = tokenizer.texts_to_sequences([review.text])
-        # padded_sequence = tf.keras.preprocessing.sequence.pad_sequences(
-        #     sequence,
-        #     maxlen=model.input_shape[1],
-        #     padding='post',
-        #     truncating='post'
-        # )
+        sequence = tokenizer.texts_to_sequences([review.text])
+        padded_sequence = tf.keras.preprocessing.sequence.pad_sequences(
+            sequence,
+            maxlen=model.input_shape[1],
+            padding='post',
+            truncating='post'
+        )
         
-        # prediction = model.predict(padded_sequence)[0][0]
-        # confidence = float(prediction)
-        # is_positive = confidence >= 0.5
-        # sentiment = "positive" if is_positive else "negative"
+        prediction = model.predict(padded_sequence)[0][0]
+        confidence = float(prediction)
+        is_positive = confidence >= 0.5
+        sentiment = "positive" if is_positive else "negative"
         
         return SentimentResponse(
             sentiment="positive",
