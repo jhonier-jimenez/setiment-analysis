@@ -39,7 +39,7 @@ El proyecto está organizado de manera modular para facilitar su comprensión y 
 * `01 - exploración de datos.ipynb`: Notebook para el Análisis Exploratorio de Datos (EDA).
 * `02 - preprocesado.ipynb`: Notebook que realiza toda la limpieza y preparación de los datos de texto.
 * `03 - arquitectura de linea de base.ipynb`: Notebook donde se define la arquitectura del modelo BiLSTM y se preparan las secuencias (tokenización y padding).
-* `04 - entrenamiento_y_evaluacion.ipynb`: Notebook para entrenar, evaluar el modelo y visualizar los resultados.
+* `04 - entrenamiento y evaluacion.ipynb`: Notebook para entrenar, evaluar el modelo y visualizar los resultados.
 * `sentiment_model.h5`: El modelo final entrenado y guardado.
 * `tokenizer_config.json`: El objeto Tokenizer de Keras guardado, esencial para procesar nuevas reseñas con el mismo vocabulario.
 * `requirements.txt`: Archivo con las dependencias exactas del proyecto.
@@ -92,7 +92,7 @@ Para replicar los resultados, puedes seguir estos pasos.
     1.  `01 - exploración de datos.ipynb`
     2.  `02 - preprocesado.ipynb`
     3.  `03 - arquitectura de linea de base.ipynb`
-    4.  `04 - entrenamiento_y_evaluacion.ipynb`
+    4.  `04 - entrenamiento y evaluacion.ipynb`
 
 ### Ejecución en Google Colab
 
