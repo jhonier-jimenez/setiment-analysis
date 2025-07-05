@@ -3,8 +3,6 @@
 **Autores:** Daniel Brand Taborda, Jhonier Raúl Jiménez
 **Curso:** Deep Learning - 2025
 
-**Enlace del video:** https://youtu.be/iSqDng-TPaw
-
 ---
 
 ## 📝 Descripción del Proyecto
@@ -19,7 +17,7 @@ Para lograrlo, se implementó un modelo de Deep Learning basado en una **Red Neu
 
 En el siguiente video se encuentra la presentación ejecutiva del proyecto, explicando la metodología, la arquitectura y los resultados obtenidos.
 
-👉 **Enlace al video:** **[AQUÍ DEBES PEGAR EL ENLACE A TU VIDEO DE YOUTUBE]**
+👉 **Enlace al video:** **[https://youtu.be/iSqDng-TPaw]**
 
 ---
 
