@@ -3,6 +3,8 @@
 **Autores:** Daniel Brand Taborda, Jhonier Raúl Jiménez
 **Curso:** Deep Learning - 2025
 
+**Enlace del video:** https://youtu.be/iSqDng-TPaw
+
 ---
 
 ## 📝 Descripción del Proyecto
