@@ -1,146 +1,124 @@
-# Sentiment Analysis Project
+# Análisis de Sentimiento de Reseñas de Películas con BiLSTM
 
-This repository contains a sentiment analysis project with both the analysis notebooks and a FastAPI-based API for analyzing sentiment in movie reviews using LSTM.
+**Autores:** Daniel Brand Taborda, Jhonier Raúl Jiménez
+**Curso:** Deep Learning - 2025
 
-## Project Structure
+**Enlace del video:** https://youtu.be/iSqDng-TPaw
 
-```
-.
-├── 01 - exploración de datos.ipynb
-├── 02 - preprocesado.ipynb
-├── 03 - arquitectura de linea de base.ipynb
-├── app/
-│   ├── main.py
-│   ├── config.py
-│   ├── requirements.txt
-│   ├── .env
-│   ├── docker/
-│   │   ├── Dockerfile
-│   │   ├── docker-compose.yml
-│   │   └── .dockerignore
-│   └── models/
-│       ├── sentiment_model.h5
-│       └── tokenizer.pkl
-└── README.md
-```
+---
 
-## Requirements
+## 📝 Descripción del Proyecto
 
-- Python 3.11 or higher
-- Docker and Docker Compose (for containerized deployment)
+Este repositorio contiene la solución para un proyecto de análisis de sentimiento, cuyo objetivo es clasificar reseñas de películas del famoso **dataset IMDB** como **positivas** o **negativas**.
 
-## FastAPI Setup
+Para lograrlo, se implementó un modelo de Deep Learning basado en una **Red Neuronal Recurrente Bidireccional (BiLSTM)**. El proyecto abarca desde el análisis exploratorio de los datos y su preprocesamiento (limpieza, lematización, tokenización) hasta el entrenamiento y la evaluación rigurosa del modelo.
 
-The FastAPI application is located in the `app` directory.
+---
 
-### Local Development Setup
+## 🎥 Video de Presentación
 
-1. Install uv if you haven't already:
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
+En el siguiente video se encuentra la presentación ejecutiva del proyecto, explicando la metodología, la arquitectura y los resultados obtenidos.
 
-2. Create a virtual environment and install dependencies:
-```bash
-cd app
-uv venv
-source .venv/bin/activate  # On Linux/Mac
-# or
-.venv\Scripts\activate  # On Windows
-uv pip install -r requirements.txt
-```
+👉 **Enlace al video:** **[AQUÍ DEBES PEGAR EL ENLACE A TU VIDEO DE YOUTUBE]**
 
-3. Run the application:
-```bash
-uvicorn main:app --reload
-```
+---
 
-### Docker Setup
+## 📊 Resultados
 
-1. Build and run using Docker Compose:
-```bash
-cd app
-docker-compose -f docker/docker-compose.yml up --build
-```
+El modelo final, tras ser entrenado durante 5 épocas, alcanzó un rendimiento sólido y balanceado en el conjunto de prueba (datos nunca antes vistos):
 
-2. Or build and run using Docker directly:
-```bash
-cd app
-docker build -t sentiment-analysis-api -f docker/Dockerfile .
-docker run -p 8000:8000 -v $(pwd)/models:/app/models sentiment-analysis-api
-```
+* **Exactitud (Accuracy) General:** **86.6%**
+* **F1-Score (Promedio):** **87%**
 
-The API will be available at http://localhost:8000
+---
 
-## API Endpoints
+## 🗂️ Estructura del Repositorio
 
-### Analyze Sentiment
-- **POST** `/api/v1/analyze`
-- Analyzes the sentiment of a movie review text
-- Request body:
-```json
-{
-    "text": "Your movie review text here"
-}
-```
-- Response:
-```json
-{
-    "sentiment": "positive|negative",
-    "confidence": 0.95,
-    "is_positive": true
-}
-```
+El proyecto está organizado de manera modular para facilitar su comprensión y reproducibilidad.
 
-### Health Check
-- **GET** `/api/v1/health`
-- Checks the health status of the API and model loading
-- Response:
-```json
-{
-    "status": "healthy",
-    "model_loaded": true,
-    "tokenizer_loaded": true,
-    "settings": {
-        "max_text_length": 500,
-        "model_path": "models/sentiment_model.h5",
-        "tokenizer_path": "models/tokenizer.pkl"
-    }
-}
-```
+* **/data**: Contiene el dataset original `IMDB Dataset.csv`.
+* **/processed_data**: Contiene los datos de entrenamiento y prueba ya limpios y preprocesados, listos para ser consumidos por el modelo.
+* `01 - exploración de datos.ipynb`: Notebook para el Análisis Exploratorio de Datos (EDA).
+* `02 - preprocesado.ipynb`: Notebook que realiza toda la limpieza y preparación de los datos de texto.
+* `03 - arquitectura de linea de base.ipynb`: Notebook donde se define la arquitectura del modelo BiLSTM y se preparan las secuencias (tokenización y padding).
+* `04 - entrenamiento y evaluacion.ipynb`: Notebook para entrenar, evaluar el modelo y visualizar los resultados.
+* `sentiment_model.h5`: El modelo final entrenado y guardado.
+* `tokenizer_config.json`: El objeto Tokenizer de Keras guardado, esencial para procesar nuevas reseñas con el mismo vocabulario.
+* `requirements.txt`: Archivo con las dependencias exactas del proyecto.
+* `INFORME_PROYECTO.PDF`: El informe ejecutivo detallado del proyecto.
+* `ENTREGA1.PDF`: El informe de la primera entrega del proyecto.
 
-## API Documentation
+---
 
-You can access the API documentation at:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+## 🚀 Cómo Ejecutar el Proyecto
 
-## Configuration
+Para replicar los resultados, puedes seguir estos pasos.
 
-The API uses Pydantic settings for configuration. You can modify the settings in `app/.env`:
+### Prerrequisitos
 
-```env
-MAX_TEXT_LENGTH=500
-MODEL_PATH=models/sentiment_model.h5
-TOKENIZER_PATH=models/tokenizer.pkl
-HOST=0.0.0.0
-PORT=8000
-RELOAD=true
-```
+* Python 3.8 o superior
+* Pip (manejador de paquetes de Python)
 
-All settings have default values and can be overridden through environment variables. The settings are automatically loaded from the `.env` file.
+### Instalación en un Entorno Local
 
-## Docker Configuration
+1.  **Clona el repositorio:**
+    ```bash
+    git clone [URL-DE-TU-REPOSITORIO]
+    cd [NOMBRE-DEL-REPOSITORIO]
+    ```
 
-The application can be run in a Docker container. The Docker configuration is located in the `app/docker` directory and includes:
+2.  **Crea y activa un entorno virtual (recomendado):**
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate  # En Windows: .venv\Scripts\activate
+    ```
 
-- A multi-stage build to minimize the final image size
-- Volume mounting for the models directory
-- Environment variable configuration
-- Automatic restart policy
-- Python 3.11 runtime
+3.  **Instala las dependencias:**
+    El archivo `requirements.txt` contiene todas las librerías necesarias con sus versiones exactas. Instálalas con el siguiente comando:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    Las dependencias clave son:
+    - `tensorflow==2.19.0`
+    - `pandas==2.3.0`
+    - `numpy==2.3.1`
+    - `scikit-learn==1.7.0`
+    - `nltk==3.9.1`
+    - `matplotlib==3.10.3`
+    - `seaborn==0.13.2`
 
-To customize the Docker setup, you can modify:
-- `app/docker/Dockerfile` for build configuration
-- `app/docker/docker-compose.yml` for runtime configuration
-- Environment variables in the docker-compose file
+    *Nota: La primera vez que ejecutes el notebook de preprocesado, NLTK podría necesitar descargar componentes adicionales como `wordnet` y `stopwords`.*
+
+4.  **Ejecuta los notebooks en orden:**
+    Abre Jupyter Notebook o Jupyter Lab y ejecuta los notebooks en el siguiente orden numérico para replicar el pipeline completo:
+    1.  `01 - exploración de datos.ipynb`
+    2.  `02 - preprocesado.ipynb`
+    3.  `03 - arquitectura de linea de base.ipynb`
+    4.  `04 - entrenamiento y evaluacion.ipynb`
+
+### Ejecución en Google Colab
+
+Alternativamente, los notebooks están diseñados para ser **directamente reproducibles en Google Colab**. Simplemente sube la carpeta del proyecto a tu Google Drive, o clona el repositorio directamente en una celda de Colab, y ejecuta los notebooks en orden.
+
+---
+
+## 💾 Dataset
+
+El conjunto de datos utilizado es el **"IMDB Dataset of 50K Movie Reviews"**, disponible públicamente en Kaggle.
+
+* **Enlace:** [https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+* **Lenguaje:** Python
+* **Deep Learning:** TensorFlow / Keras
+* **Procesamiento de Lenguaje Natural:** NLTK
+* **Manipulación de Datos:** Pandas, NumPy
+* **Visualización:** Matplotlib, Seaborn
+* **Entorno:** Jupyter Notebooks, Google Colab
+
+---
+
+¡Gracias por revisar el proyecto!
